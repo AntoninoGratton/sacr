@@ -1,0 +1,57 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:5.7
+    command: --max_allowed_packet=67108864
+    environment:
+        - MYSQL_ROOT_PASSWORD=1234
+    volumes:
+        - ./database/mysql:/var/lib/mysql
+    networks:
+      - back
+    restart: always
+
+  django-py3:
+    build: .
+    command: bash -c "python3 daemon.py & python3 manage.py runserver 0.0.0.0:80"
+    volumes:
+      - .:/code
+
+    depends_on:
+      - db
+    ports:
+      - 80:80
+    networks:
+      - back
+      - front
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    ports:
+      - 8002:80
+    networks:
+      - front
+      - back
+    restart: always
+
+  web:
+    image: httpd
+    depends_on:
+      - django-py3
+    ports:
+      - 8004:80
+    volumes:
+      - ./http_public:/usr/local/apache2/htdocs
+    networks:
+      - front
+      - back
+    restart: always
+
+networks:
+  front:
+    external: true
+  back:
+    external: true
