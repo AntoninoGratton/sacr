@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
     ports:
-      - 80:80
+      - 85:80
     networks:
       - back
       - front
@@ -32,19 +32,6 @@ services:
       - db
     ports:
       - 8002:80
-    networks:
-      - front
-      - back
-    restart: always
-
-  web:
-    image: httpd
-    depends_on:
-      - django-py3
-    ports:
-      - 8004:80
-    volumes:
-      - ./http_public:/usr/local/apache2/htdocs
     networks:
       - front
       - back
