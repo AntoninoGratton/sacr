@@ -1,22 +1,29 @@
-<h1>Antonino</h1>
-<input type="text" id="numero1">
-+
-<input type="text" id="numero2">
-<br>
-<button id="calcular">Calcular</button>
-<br>
-<h1>Resultado</h1>
-<p id="resultado"></p>
+<html lang="es">
+    <head>
+        <title>Toni's WEB</title>
+    </head>
+    <body>
+        <h1>Antonino</h1>
+        <input type="text" id="numero1">
+        +
+        <input type="text" id="numero2">
+        <br>
+        <button id="calcular">Calcular</button>
+        <br>
+        <h1>Resultado</h1>
+        <h3 id="resultado"></h3>
 
-<script>
-    var btn = document.getElementById("calcular");
-    btn.addEventListener("click", 
-    () => {
-        var input1 = document.getElementById("numero1");
-        var input2 = document.getElementById("numero2");
+        <script>
+            var btn = document.getElementById("calcular");
+            btn.addEventListener("click", 
+            () => {
+                var input1 = document.getElementById("numero1");
+                var input2 = document.getElementById("numero2");
 
-        var resultado = document.getElementById("resultado");
+                var resultado = document.getElementById("resultado");
 
-        resultado.innerHTML = parseFloat(input1.value) + parseFloat(input2.value);
-    });
-</script>
+                resultado.innerHTML = parseFloat(input1.value) + parseFloat(input2.value);
+            });
+        </script>
+    </body>
+</html>
