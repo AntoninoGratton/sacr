@@ -1,1 +1,22 @@
 <h1>Antonino</h1>
+<input type="text" id="numero1">
++
+<input type="text" id="numero2">
+<br>
+<button id="calcular">Calcular</button>
+<br>
+<h1>Resultado</h1>
+<p id="resultado"></p>
+
+<script>
+    var btn = document.getElementById("calcular");
+    btn.addEventListener("click", 
+    () => {
+        var input1 = document.getElementById("numero1");
+        var input2 = document.getElementById("numero2");
+
+        var resultado = document.getElementById("resultado");
+
+        resultado.innerHTML = parseFloat(input1.value) + parseFloat(input2.value);
+    });
+</script>
