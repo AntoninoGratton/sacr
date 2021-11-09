@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-n7)k9&_)gh4m_@xq$7)x6^)jdi-ryq1en71vf!xq!zssj4c%ii
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sacr.com.ar']
 
 
 # Application definition

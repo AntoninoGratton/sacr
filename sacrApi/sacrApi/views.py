@@ -1,4 +1,4 @@
-from django.http import HttpResponse, Json
+from django.http import HttpResponse
 
 def prueba(request):
     if request.method == 'GET':
