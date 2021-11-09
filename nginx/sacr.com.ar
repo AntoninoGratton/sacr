@@ -1,3 +1,11 @@
+upstream docker_pma{
+	server 127.0.0.1:8002;
+}
+
+upstream docker_api{
+	server 127.0.0.1:85;
+}
+
 server {
 
 	# SSL configuration
@@ -29,23 +37,31 @@ server {
 		try_files $uri $uri/ =404;
 	}
 
-	# pass PHP scripts to FastCGI server
-	#
-	#location ~ \.php$ {
-	#	include snippets/fastcgi-php.conf;
-	#
-	#	# With php-fpm (or other unix sockets):
-	#	fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-	#	# With php-cgi (or other tcp sockets):
-	#	fastcgi_pass 127.0.0.1:9000;
-	#}
+	location /api {
+		rewrite /api(.*) $1 break;
+		proxy_pass  http://docker_api;
+		proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+		proxy_redirect off;
+		proxy_buffering off;
+		proxy_set_header        Host            $host;
+		proxy_set_header        X-Real-IP       $remote_addr;
+		proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
 
-	# deny access to .htaccess files, if Apache's document root
-	# concurs with nginx's one
-	#
-	#location ~ /\.ht {
-	#	deny all;
-	#}
+		access_log /var/log/nginx/api.access.log;
+   	}
+
+	location /pma {
+		rewrite /pma(.*) $1 break;
+		proxy_pass  http://docker_pma;
+		proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+		proxy_redirect off;
+		proxy_buffering off;
+		proxy_set_header        Host            $host;
+		proxy_set_header        X-Real-IP       $remote_addr;
+		proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		access_log /var/log/nginx/pma.access.log;
+   	}
 
 
     listen [::]:443 ssl ipv6only=on; # managed by Certbot
