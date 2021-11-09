@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from sacrApi.internos import *
 
 def prueba(request):
     if request.method == 'GET':
