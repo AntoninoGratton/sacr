@@ -20,5 +20,6 @@ from sacrApi.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('prueba/', prueba)
+    path('prueba/', prueba),
+    path('post/', pruebaPost)
 ]
