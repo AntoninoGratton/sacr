@@ -118,6 +118,10 @@ void postRequest(String api, String obj)
   aux.concat(api);
   aux.concat("\"\r");
 
+  String httpData = "AT+HTTPDATA=";
+  httpData.concat(String(obj.length()));
+  httpData.concat(",10000");
+
   Serial2.print("AT+SAPBR=1,1\r"); /* Open GPRS context */
   vTaskDelay(1000);
   Serial.println(recep());
@@ -136,14 +140,15 @@ void postRequest(String api, String obj)
   Serial2.print("AT+HTTPPARA=\"CONTENT\",\"application/json\"\r");  /* Set parameters for HTTP session */
   vTaskDelay(1000);
   Serial.println(recep());
-  Serial2.println("AT+HTTPDATA=99,10000");
+  Serial2.println(httpData);//"AT+HTTPDATA=18,10000");
   vTaskDelay(1000);
   Serial.println(recep());
   Serial2.println(obj);
-  vTaskDelay(1000);
+  vTaskDelay(2000);
+  Serial2.println("\r\n");
   Serial.println(recep());
-  Serial2.print("AT+HTTPACTION=1\r");  /* Start GET session */
-  vTaskDelay(5000);
+  Serial2.print("AT+HTTPACTION=1\r");  /* Start POST session */
+  vTaskDelay(4000);
   Serial.println(recep());
   Serial2.print("AT+HTTPREAD=0,30000\r");  /* Read data from HTTP server */
   vTaskDelay(4000);

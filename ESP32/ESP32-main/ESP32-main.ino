@@ -1,10 +1,11 @@
 #include <SPI.h>
+#include "Wire.h"
+#include "I2C_eeprom.h"
 #include <MFRC522.h>
-//#include <Preferences.h>
 
 // SPI Pins
 #define SS_PIN 5
-#define RST_PIN 4
+#define RST_PIN 15
 
 // Parametros RTOS
 #define SIZE_BUFFER     18
@@ -43,7 +44,7 @@ void LectorTag( void *pvParameters );
 void LTE( void *pvParameters );
 
 TaskHandle_t LogsHandle;
-//Preferences preferences;
+TaskHandle_t LTEHandle;
 
 // the setup function runs once when you press reset or power the board
 void setup() {
@@ -51,6 +52,8 @@ void setup() {
   // initialize serial communication at 115200 bits per second:
   Serial.begin(115200);
 //  initLTE();
+  EEPROMInit();
+//  EEPROMguardar(nuidPICC[0]);
   Serial2.begin(19200, SERIAL_8N1, RXD2, TXD2);
   Serial.println("Modulo LTE inicializado");
 //  preferences.begin("logs", false);
@@ -59,28 +62,28 @@ void setup() {
   xTaskCreatePinnedToCore(
     LectorTag
     ,  "LectorTag"   // A name just for humans
-    ,  4096  // This stack size can be checked & adjusted by reading the Stack Highwater
+    ,  3072  // This stack size can be checked & adjusted by reading the Stack Highwater
     ,  NULL
     ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
     ,  NULL 
     ,  ARDUINO_RUNNING_CORE);
 
-//  xTaskCreatePinnedToCore(
-//    Logs
-//    ,  "Logs"   // A name just for humans
-//    ,  1024  // This stack size can be checked & adjusted by reading the Stack Highwater
-//    ,  NULL
-//    ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-//    ,  &LogsHandle 
-//    ,  ARDUINO_RUNNING_CORE);
+  xTaskCreatePinnedToCore(
+    Logs
+    ,  "Logs"   // A name just for humans
+    ,  3072  // This stack size can be checked & adjusted by reading the Stack Highwater
+    ,  NULL
+    ,  3  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+    ,  &LogsHandle 
+    ,  ARDUINO_RUNNING_CORE);
 
   xTaskCreatePinnedToCore(
     LTE
     ,  "LTE"   // A name just for humans
-    ,  1024  // This stack size can be checked & adjusted by reading the Stack Highwater
+    ,  3072  // This stack size can be checked & adjusted by reading the Stack Highwater
     ,  NULL
     ,  1  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-    ,  NULL 
+    ,  &LTEHandle 
     ,  ARDUINO_RUNNING_CORE);
 
   // Now the task scheduler, which takes over control of scheduling individual tasks, is automatically started.
@@ -116,16 +119,6 @@ void LectorTag(void *pvParameters)  // This is a task.
 {
   (void) pvParameters;
 
-/*
-  Blink
-  Turns on an LED on for one second, then off for one second, repeatedly.
-    
-  If you want to know what pin the on-board LED is connected to on your ESP32 model, check
-  the Technical Specs of your board.
-*/
-
-  // initialize digital LED_BUILTIN on pin 13 as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
   SPI.begin(); // Init SPI bus
   rfid.PCD_Init();
   uint8_t flag = 0;
@@ -136,13 +129,15 @@ void LectorTag(void *pvParameters)  // This is a task.
 
   for (;;) // A Task shall never return or exit.
   {
+    
+//    digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+//    vTaskDelay(500);  // one tick delay (15ms) in between reads for stability
+//    digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
     flag = 0;
     if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial())
     {
 
-//      Serial.print(F("PICC type: "));
       MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
-//      Serial.println(rfid.PICC_GetTypeName(piccType));
     
       // Check is the PICC of Classic MIFARE type
       if (piccType == MFRC522::PICC_TYPE_MIFARE_MINI ||  
@@ -189,15 +184,9 @@ void LectorTag(void *pvParameters)  // This is a task.
       else {
         Serial.println(F("Your tag is not of type MIFARE Classic."));
       }
-    
-      
-  
-//      digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-//      vTaskDelay(100);  // one tick delay (15ms) in between reads for stability
-//      digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
-//      vTaskDelay(100);  // one tick delay (15ms) in between reads for stability
+
     }
-    vTaskDelay(10);  // one tick delay (15ms) in between reads for stability
+    vTaskDelay(100);  // one tick delay (15ms) in between reads for stability
   }
 }
 
@@ -225,11 +214,28 @@ void LTE(void *pvParameters)  // This is a task.
 
   initLTE();
 //  getRequest("/prueba/");
-  postRequest("/post/", "{\"dato\": \"holis\"}");
+  postRequest("/post/", "{\"datos\":\"Holass\"}");
 //  sms("+5493482583998", "Buuueeeenass");
 
   for (;;) // A Task shall never return or exit.
   {
-    vTaskDelay(500);
+    vTaskDelay(10);
+  }
+}
+
+void Logs(void *pvParameters)
+{
+  (void) pvParameters;
+  vTaskDelay(4000);
+  ejemplo();
+//  EEPROMguardar(nuidPICC[0]);
+  ponerACero();
+
+  for(;;)
+  {
+//    digitalWrite(LED_BUILTIN, HIGH);
+//    vTaskDelay(500);
+//    digitalWrite(LED_BUILTIN, LOW);
+    vTaskDelay(10);
   }
 }
