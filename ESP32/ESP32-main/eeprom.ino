@@ -13,12 +13,12 @@ void EEPROMInit()
   ee.begin();
   if (! ee.isConnected())
   {
-    Serial.println("ERROR: Can't find eeprom (stopped)...");
+    Serial.println("ERROR: No se encuentra la EEPROM");
     return;
   }
 }
 
-void EEPROMguardar(byte *id)
+void EEPROMGuardar(byte *id, byte *codigo)
 {
   ultimaPosicion = ee.readByte(0);
 
@@ -27,19 +27,34 @@ void EEPROMguardar(byte *id)
     ee.writeByte(ultimaPosicion+1, *(id+i));
     ultimaPosicion++;
   }
-  Serial.println(ultimaPosicion);
+
+  for(int i=0; i<4; i++)
+  {
+    ee.writeByte(ultimaPosicion+1, *(codigo+i));
+    ultimaPosicion++;
+  }
+
+  // Serial.println(ultimaPosicion);
   ee.updateByte(0, ultimaPosicion);
 }
 
 void ejemplo()
 {
-  byte id[4] = {0};
+  byte id[2][4] = {0};
   ultimaPosicion = ee.readByte(0);
 
   for(int i=0; i<4; i++)
   {
-    id[i] = ee.readByte(ultimaPosicion-3+i);
-    Serial.print(id[i]);
+    id[0][i] = ee.readByte(ultimaPosicion-7+i);
+    Serial.print(id[0][i]);
+    Serial.print("\t");
+  }
+  Serial.println();
+
+  for(int i=0; i<4; i++)
+  {
+    id[1][i] = ee.readByte(ultimaPosicion-3+i);
+    Serial.print(id[1][i]);
     Serial.print("\t");
   }
   Serial.println();
@@ -47,7 +62,7 @@ void ejemplo()
 
 void ponerACero()
 {
-//  ee.writeByte(0, 0);
+ // ee.writeByte(0, 0);
   uint8_t pos = -1;
   pos = ee.readByte(0);
   Serial.println(pos);
