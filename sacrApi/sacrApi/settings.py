@@ -11,23 +11,24 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+if os.path.isfile(os.path.join(BASE_DIR, "this_is_aveit.txt")):
+    """ Si se encuentra en la raíz del proyecto el file this_is_aveit,
+        Django importa los settings correspondientes a production.
+    """
+    exec(open('sacrApi/settings-prod.py').read())
+else:
+    exec(open('sacrApi/settings-dev.py').read())
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-n7)k9&_)gh4m_@xq$7)x6^)jdi-ryq1en71vf!xq!zssj4c%ii'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = ['sacr.com.ar']
-
 
 # Application definition
 
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +52,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+MIDDLEWARE_CLASSES = (
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'middleware.crossdomainxhr.XsSharing',
+    'corsheaders.middleware.CorsMiddleware',
+    'middleware.logger.LoggingMiddleware',
+)
 
 ROOT_URLCONF = 'sacrApi.urls'
 
@@ -70,6 +83,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sacrApi.wsgi.application'
 
+XS_SHARING_ALLOWED_METHODS = ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE', 'PATCH']
+XS_SHARING_ALLOWED_HEADERS = ['Content-Type', 'X-Requested-With', 'X-CSRFToken']
+XS_SHARING_ALLOWED_CREDENTIALS = 'true'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -84,7 +100,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
