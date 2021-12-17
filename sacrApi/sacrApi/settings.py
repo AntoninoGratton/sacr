@@ -20,9 +20,9 @@ if os.path.isfile(os.path.join(BASE_DIR, "this_is_aveit.txt")):
     """ Si se encuentra en la raíz del proyecto el file this_is_aveit,
         Django importa los settings correspondientes a production.
     """
-    exec(open('sacrApi/settings-prod.py').read())
+    exec(open('settings-prod.py').read())
 else:
-    exec(open('sacrApi/settings-dev.py').read())
+    exec(open('settings-dev.py').read())
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
