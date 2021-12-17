@@ -31,17 +31,3 @@ XS_SHARING_ALLOWED_ORIGINS = 'http://localhost'
 CORS_ORIGIN_ALLOW_ALL = False
 #CORS_ORIGIN_WHITELIST = ['']
 CORS_ALLOW_CREDENTIALS = True
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sacr',
-        'USER': 'sacrsys',
-        'PASSWORD':	'ADg03JoAJI6gW0m6',
-        'HOST': 'db',
-        'PORT': '3306',
-    }
-}

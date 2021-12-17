@@ -16,13 +16,13 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-if os.path.isfile(os.path.join(BASE_DIR, "this_is_aveit.txt")):
-    """ Si se encuentra en la raíz del proyecto el file this_is_aveit,
+if os.path.isfile(os.path.join(BASE_DIR, "produccion.txt")):
+    """ Si se encuentra en la raíz del proyecto el file produccion.txt,
         Django importa los settings correspondientes a production.
     """
-    exec(open('settings-prod.py').read())
+    exec(open('sacrApi/settings-prod.py').read())
 else:
-    exec(open('settings-dev.py').read())
+    exec(open('sacrApi/settings-dev.py').read())
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
