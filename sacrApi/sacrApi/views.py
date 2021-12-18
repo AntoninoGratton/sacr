@@ -3,6 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 from sacrApi.internos import *
 import json
 
+
+
 @csrf_exempt
 def prueba(request):
     if request.method == 'GET':
