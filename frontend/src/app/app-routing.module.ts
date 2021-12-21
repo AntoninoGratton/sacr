@@ -4,7 +4,8 @@ import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
 
 import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
-import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
+// import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
+import { LoginComponent } from './layouts/login/login.component';
 
 const routes: Routes = [
   {
@@ -22,14 +23,14 @@ const routes: Routes = [
       }
     ]
   }, {
-    path: "",
-    component: AuthLayoutComponent,
-    children: [
-      {
-        path: "",
-        loadChildren: () => import ("./layouts/auth-layout/auth-layout.module").then(m => m.AuthLayoutModule)
-      }
-    ]
+    path: "login",
+    component: LoginComponent,
+    // children: [
+    //   {
+    //     path: "",
+    //     loadChildren: () => import ("./layouts/auth-layout/auth-layout.module").then(m => m.AuthLayoutModule)
+    //   }
+    // ]
   },
   {
     path: "**",

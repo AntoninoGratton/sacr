@@ -151,7 +151,8 @@ void LectorTag(void *pvParameters)  // This is a task.
               rfid.uid.uidByte[3] == nuidPICC[i][3] ) {
     //          Serial.println(F("A new card has been detected."));
                 digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-                vTaskDelay(1500);  // one tick delay (15ms) in between reads for stability
+                vTaskDelay(2000);  // one tick delay (15ms) in between reads for stability
+                vTaskDelay(2000);  // one tick delay (15ms) in between reads for stability
                 digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
     //            vTaskDelay(100);  // one tick delay (15ms) in between reads for stability
                 flag = 0;
@@ -212,10 +213,10 @@ void LTE(void *pvParameters)  // This is a task.
 {
   (void) pvParameters;
 
-  initLTE();
-//  getRequest("/prueba/");
-  postRequest("/post/", "{\"datos\":\"Holass\"}");
-//  sms("+5493482583998", "Buuueeeenass");
+//  initLTE();
+////  getRequest("/prueba/");
+//  postRequest("/post/", "{\"datos\":\"Holass\"}");
+////  sms("+5493482583998", "Buuueeeenass");
 
   for (;;) // A Task shall never return or exit.
   {
@@ -228,6 +229,17 @@ void Logs(void *pvParameters)
   (void) pvParameters;
   vTaskDelay(4000);
   ejemplo();
+  Serial.print("ASUNTO: ");
+//  Serial.println(byteAInt(nuidPICC[0]));
+//  byte aux[4] = {0};
+  byte *aux;
+  aux = intAByte(3456509049);
+  for(int i=0; i<4; i++)
+  {
+    Serial.print(*(aux+i));
+    Serial.print("\t");
+  }
+  Serial.println();
  // EEPROMGuardar(nuidPICC[0], nuidPICC[1]);
   ponerACero();
 
