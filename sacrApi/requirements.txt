@@ -1,6 +1,7 @@
 Django==3.2.9
 djangorestframework==3.12.4
 django-cors-headers
+django-axes
 mysqlclient
 simplejson
 image
