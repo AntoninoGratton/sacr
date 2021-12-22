@@ -1,0 +1,51 @@
+.logo-img img{
+  width: 60px;
+}
+
+.footer{
+  position:absolute;
+  width:100%;
+  bottom:0px;
+  left:0px;
+}
+
+.page-header{
+  min-height: 100vh;
+  display: inherit;
+}
+
+.container {
+  padding-top:16vh;
+  position: relative;
+  -webkit-animation-name: entradaLogin; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 0.5s; /* Safari 4.0 - 8.0 */
+  animation-name: entradaLogin;
+  animation-duration: 0.5s;
+}
+
+.carta {
+  z-index: 100;
+}
+
+.alert {
+  margin-bottom: 0px;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes entradaLogin {
+  0%   {padding-top:6vh;opacity:0;filter:alpha(opacity=00);}
+  100% {padding-top:16vh;opacity:1.0;filter:alpha(opacity=100);}
+}
+
+/* Sintaxis comun */
+@keyframes entradaLogin {
+  0%   {padding-top:6vh;opacity:0;filter:alpha(opacity=00);}
+  100% {padding-top:16vh;opacity:1.0;filter:alpha(opacity=100);}
+}
+
+@media only screen and (max-height: 550px) {
+  .footer {
+    position:static;
+    // padding-top:500px;
+  }
+}
