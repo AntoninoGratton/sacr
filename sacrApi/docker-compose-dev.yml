@@ -35,7 +35,19 @@ services:
     volumes:
       - ./nginx/sites-enabled:/etc/nginx/sites-enabled
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./http_public/index.html:/var/www/html/index.html
+      - ./http_public/:/var/www/html/
+    restart: always
+    networks:
+      - front
+  
+  angular:
+    build:
+      context: .
+      dockerfile: DockerfileAngular
+    volumes:
+      - './frontend:/code'
+      - '/code/node_modules'
+    command: bash -c "cd /code && ng serve --host 0.0.0.0 --port 4200"
     restart: always
     networks:
       - front

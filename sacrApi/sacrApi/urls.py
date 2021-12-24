@@ -20,8 +20,10 @@ from sacrApi.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', log_in),
+    path('login/', login_view),
+    path('logout/', logout_view),
+    path('esta-autenticado/', esta_autenticado),
     path('prueba/', prueba),
     path('post/', pruebaPost),
-    path('logs/', include('sacrApi.logs.urls'))
+    path('logs/', include('sacrApi.logs.urls')),
 ]

@@ -13,3 +13,7 @@ def checkpost(params):
         if elemento is None or elemento == "":
             pasa = False
     return pasa
+
+class respuesta():
+    def __init__(self):
+        self.success = None

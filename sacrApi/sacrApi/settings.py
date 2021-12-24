@@ -73,6 +73,11 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'sacrApi.urls'
+# AXES_USERNAME_CALLABLE = 'example.utils.get_username'
+AXES_LOCK_OUT_AT_FAILURE = False
+AXES_USE_USER_AGENT = True
+AXES_COOLOFF_TIME = 1
+AXES_LOGIN_FAILURE_LIMIT = 50
 
 TEMPLATES = [
     {
@@ -89,6 +94,25 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 1,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework_jsonapi.renderers.JsonApiRenderer",
+    ),
+    "DEFAULT_PARSER_CLASSES": (
+        "rest_framework_jsonapi.parsers.JsonApiParser",
+    ),
+    "EXCEPTION_HANDLER": "rest_framework_jsonapi.views.exception_handler",
+}
 
 WSGI_APPLICATION = 'sacrApi.wsgi.application'
 

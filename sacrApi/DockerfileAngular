@@ -1,0 +1,7 @@
+FROM node:16.13.1
+RUN mkdir /code
+WORKDIR /code
+ADD ./frontend /code/
+RUN cd /code && npm install
+RUN npm install -g @angular/cli@13.0.0
+EXPOSE 4200
