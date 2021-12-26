@@ -11,7 +11,7 @@ import { EstaAutenticado_i } from '../../_interfaces/login';
   styleUrls: ["./admin-layout.component.scss"]
 })
 export class AdminLayoutComponent implements OnInit {
-  public sidebarColor: string = "red";
+  public sidebarColor: string = "blue";
   private estaAutenticado: EstaAutenticado_i;
 
   constructor(private loginApi: LoginService,
@@ -40,6 +40,9 @@ export class AdminLayoutComponent implements OnInit {
     }
   }
   ngOnInit() {
+    var body = document.getElementsByTagName('body')[0];
+    body.classList.add('black-content');
+    this.changeSidebarColor('blue');
     this.loginApi.estaAutenticado().subscribe({
       next: (resp) => {
         this.estaAutenticado = resp;

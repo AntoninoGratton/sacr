@@ -4,6 +4,9 @@ import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
+import { LoginService } from '../../_services/login.service';
+import { CookieService } from 'ngx-cookie-service';
+
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
@@ -16,6 +19,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private toggleButton: any;
   private sidebarVisible: boolean;
 
+  public logout: any;
+
   public isCollapsed = true;
 
   closeResult: string;
@@ -24,7 +29,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     location: Location,
     private element: ElementRef,
     private router: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private loginApi: LoginService,
+    private cookies: CookieService
   ) {
     this.location = location;
     this.sidebarVisible = false;
@@ -51,6 +58,19 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if ($layer) {
         $layer.remove();
         this.mobile_menu_visible = 0;
+      }
+    });
+  }
+
+  cerrarSesion(): void {
+    this.loginApi.logout().subscribe({
+      next: (resp) => {
+        this.logout = resp;
+        this.cookies.delete('user', '/');
+        this.router.navigate(['login']);
+      },
+      error: (error) => {
+        console.log("Falla el deslogueo - " + error);
       }
     });
   }

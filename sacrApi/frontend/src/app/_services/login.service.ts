@@ -26,4 +26,8 @@ export class LoginService {
   estaAutenticado(): Observable<EstaAutenticado_i> {
     return this.http.get<EstaAutenticado_i>(this.url + '/esta-autenticado/');
   }
+
+  logout(): Observable<any> {
+    return this.http.get<any>(this.url + '/logout/');
+  }
 }
