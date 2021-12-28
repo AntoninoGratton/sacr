@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'axes',
+    'sacrApi',
+    'sacrApi.alertas',
+    'sacrApi.logs'
 ]
 
 MIDDLEWARE = [

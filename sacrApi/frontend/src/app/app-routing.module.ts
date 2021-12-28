@@ -10,7 +10,7 @@ import { LoginComponent } from './layouts/login/login.component';
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "dashboard",
+    redirectTo: "principal",
     pathMatch: "full"
   },
   {
@@ -34,7 +34,7 @@ const routes: Routes = [
   },
   {
     path: "**",
-    redirectTo: "dashboard"
+    redirectTo: "principal"
   }
 ];
 

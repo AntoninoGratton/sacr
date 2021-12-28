@@ -190,7 +190,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         return this.listTitles[item].title;
       }
     }
-    return "Dashboard";
+    return "Principal";
   }
 
   open(content) {
