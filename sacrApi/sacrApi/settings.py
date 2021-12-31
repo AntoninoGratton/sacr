@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'axes',
     'sacrApi',
     'sacrApi.alertas',
-    'sacrApi.logs'
+    'sacrApi.logs',
+    'sacrApi.edificios'
 ]
 
 MIDDLEWARE = [
