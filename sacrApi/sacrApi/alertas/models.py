@@ -11,7 +11,7 @@ se registra una entrada para informar al monitoreo de ello.
 '''
 class PuertaAbierta(models.Model):
     idRegistro = models.AutoField(primary_key=True)
-    fechaHora = models.DateTimeField(null=False)
+    fechaHora = models.DateTimeField(null=False, blank=False)
     edificio = models.ForeignKey(Edificio, null=False, db_column='idEdificio', related_name='puertaAbierta', on_delete=models.CASCADE)
     equipo = models.ForeignKey(EquipoSACR, null=False, db_column='usuario', related_name='puertaAbiertaEquipo', on_delete=models.CASCADE)
     resuelta = models.BooleanField(default=False) # Verifica si la alarma fue resuelta
