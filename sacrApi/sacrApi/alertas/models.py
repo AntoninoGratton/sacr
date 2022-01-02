@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import *
 from sacrApi.edificios.models import *
+from sacrApi.residentes.models import *
 
 # Create your models here.
 

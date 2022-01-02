@@ -22,22 +22,3 @@ class EquipoSACR(models.Model):
     ip = models.CharField(max_length=45, null=True, blank=True)
     mac = models.CharField(max_length=45, null=True, blank=True)
     edificio = models.ForeignKey(Edificio, null=True, db_column='idEdificio', related_name='equipoSACR', on_delete=models.SET_NULL)
-
-class Residente(models.Model):
-    TIPO_DOC_CHOICES = [
-        ('DNI', 'DNI'),
-        ('Pasaporte', 'Pasaporte'),
-        ('LC', 'Libreta Cívica'),
-        ('LE', 'Libreta de Enrolamiento')
-    ]
-    idResidente = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=75, null=False, blank=False)
-    apellido = models.CharField(max_length=75, null=False, blank=False)
-    tipoDoc = models.CharField(max_length=10, choices=TIPO_DOC_CHOICES, null=False, blank=True)
-    doc = models.CharField(max_length=45, null=False, blank=False)
-    # Puede haber residentes extranjeros temporalmente, por eso charfield. Algunos paises tienen dni con letras o el pasaporte
-    telefono = models.CharField(max_length=65, null=False, blank=False)
-    telefono2 = models.CharField(max_length=65, null=True, blank=True)
-    email = models.CharField(max_length=65, null=False, blank=False)
-    departamento = models.CharField(max_length=6, null=False, blank=False) # Departamento del edificio
-    propietario = models.BooleanField(default=False) # Es propietario del departamento?
