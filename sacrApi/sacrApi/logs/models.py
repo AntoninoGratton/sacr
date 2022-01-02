@@ -22,5 +22,5 @@ class Bateria(models.Model):
     idReg = models.AutoField(primary_key=True)
     fechaHora = models.DateTimeField(null=False, blank=False)
     edificio = models.ForeignKey(Edificio, db_column='idEdificio', related_name='bateria', on_delete=models.CASCADE)
-    voltaje = models.CharField(max_length=15, null=False, blank=False)
+    voltaje = models.FloatField(null=False, blank=False)
     estado = models.CharField(max_length=25, null=False, blank=False)
