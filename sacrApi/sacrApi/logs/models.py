@@ -17,6 +17,7 @@ class Acceso(models.Model):
     idReg = models.AutoField(primary_key=True)
     fechaHora = models.DateTimeField(null=False, blank=False)
     residente = models.ForeignKey(Residente, db_column='idResidente', related_name='registros', on_delete=models.DO_NOTHING)
+    tag = models.ForeignKey(Tag, null=True, db_column='idTag', related_name='registrosTag', on_delete=models.DO_NOTHING)
     edificio = models.ForeignKey(Edificio, db_column='idEdificio', related_name='registrosEdificio', on_delete=models.CASCADE)
 
 class Bateria(models.Model):

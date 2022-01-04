@@ -24,3 +24,9 @@ class Residente(models.Model):
 
     class Meta():
         db_table = 'residentes_lista'
+
+class Tag(models.Model):
+    idTag = models.AutoField(primary_key=True)
+    nroTag = models.BigIntegerField(null=False, blank=False)
+    codSeguridad = models.BigIntegerField(null=False, blank=False)
+    residente = models.ForeignKey(Residente, null=False, blank=False, db_column='idResidente', related_name='tags', on_delete=models.CASCADE)
