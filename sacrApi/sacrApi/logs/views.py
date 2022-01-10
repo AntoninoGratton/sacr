@@ -10,3 +10,10 @@ import json
 def pruebita(request):
     if request.method == 'GET':
         return HttpResponse(json_response("Andaaaa"), status=200, content_type="application/json")
+
+@csrf_exempt
+def log(request):
+    if request.method == 'POST':
+        post_data = json.loads(request.body.decode("UTF-8"))
+        print(post_data.get('logs'))
+        return HttpResponse(json_response("Correcta"), status=200, content_type="application/json")
