@@ -67,8 +67,9 @@ void sms(String tel, String msg)
   return;
 }
 
-void getRequest(String api)
+String getRequest(String api)
 {
+  String retorno;
   String aux = "AT+HTTPPARA=\"URL\",\"";
   aux.concat(url);
   aux.concat(api);
@@ -100,7 +101,8 @@ void getRequest(String api)
   Serial.println(recep());
   Serial2.print("AT+HTTPREAD=0,30000\r");  /* Read data from HTTP server */
   vTaskDelay(4000);
-  Serial.println(getData(recep()));
+  retorno = getData(recep());
+//  Serial.println(getData(recep()));
   Serial2.print("AT+HTTPTERM\r");  /* Terminae HTTP service */
   vTaskDelay(1000);
   Serial.println(recep());
@@ -108,11 +110,12 @@ void getRequest(String api)
   vTaskDelay(1000);
   Serial.println(recep());
 
-  return;
+  return retorno;
 }
 
-void postRequest(String api, String obj)
+String postRequest(String api, String obj)
 {
+  String retorno;
   String aux = "AT+HTTPPARA=\"URL\",\"";
   aux.concat(url);
   aux.concat(api);
@@ -152,7 +155,8 @@ void postRequest(String api, String obj)
   Serial.println(recep());
   Serial2.print("AT+HTTPREAD=0,30000\r");  /* Read data from HTTP server */
   vTaskDelay(4000);
-  Serial.println(getData(recep()));
+  retorno = getData(recep());
+//  Serial.println(getData(recep()));
   Serial2.print("AT+HTTPTERM\r");  /* Terminae HTTP service */
   vTaskDelay(1000);
   Serial.println(recep());
@@ -160,5 +164,5 @@ void postRequest(String api, String obj)
   vTaskDelay(1000);
   Serial.println(recep());
 
-  return;
+  return retorno;
 }

@@ -15,5 +15,5 @@ def pruebita(request):
 def log(request):
     if request.method == 'POST':
         post_data = json.loads(request.body.decode("UTF-8"))
-        print(post_data.get('logs'))
+        print(post_data.get('tag'))
         return HttpResponse(json_response("Correcta"), status=200, content_type="application/json")

@@ -19,6 +19,10 @@
 #define I2C_SDA 21
 #define I2C_SCL 22
 
+//Tipos de mensajes
+#define TIPO_MENSAJE_LOG    0
+#define TIPO_MENSAJE_ALERTA 1
+
 #if CONFIG_FREERTOS_UNICORE
 #define ARDUINO_RUNNING_CORE 0
 #else
@@ -43,6 +47,8 @@ void LectorTag( void *pvParameters );
 //void Logs( void *pvParameters );
 void LTE( void *pvParameters );
 
+QueueHandle_t logsQueue;
+
 TaskHandle_t LogsHandle;
 TaskHandle_t LTEHandle;
 
@@ -56,7 +62,12 @@ void setup() {
 //  EEPROMGuardar(nuidPICC[0]);
   Serial2.begin(19200, SERIAL_8N1, RXD2, TXD2);
   Serial.println("Modulo LTE inicializado");
-//  preferences.begin("logs", false);
+
+  logsQueue = xQueueCreate(10, sizeof(uint32_t));
+ 
+  if(logsQueue == NULL){
+    Serial.println("Error al crear la queue");
+  }
 
   // Now set up two tasks to run independently.
   xTaskCreatePinnedToCore(
@@ -123,6 +134,8 @@ void LectorTag(void *pvParameters)  // This is a task.
   rfid.PCD_Init();
   uint8_t flag = 0;
 
+  uint32_t auxiliar;
+
   for (byte i = 0; i < 6; i++) {
     key.keyByte[i] = 0xFF;
   }
@@ -155,6 +168,12 @@ void LectorTag(void *pvParameters)  // This is a task.
                 vTaskDelay(2000);  // one tick delay (15ms) in between reads for stability
                 digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
     //            vTaskDelay(100);  // one tick delay (15ms) in between reads for stability
+                Serial.println("LOG ENVIADO");
+                auxiliar = byteAInt(rfid.uid.uidByte);
+//                Serial.println(auxiliar);
+                xQueueSend(logsQueue, &auxiliar, 5);
+//                Serial.println(auxiliar);
+//                Serial.println(postAcceso());
                 flag = 0;
               // Store NUID into nuidPICC array
     //          for (byte i = 0; i < 4; i++) {
@@ -227,24 +246,33 @@ void LTE(void *pvParameters)  // This is a task.
 void Logs(void *pvParameters)
 {
   (void) pvParameters;
-  vTaskDelay(4000);
-  ejemplo();
-  Serial.print("ASUNTO: ");
-//  Serial.println(byteAInt(nuidPICC[0]));
-//  byte aux[4] = {0};
-  byte *aux;
-  aux = intAByte(3456509049);
-  for(int i=0; i<4; i++)
-  {
-    Serial.print(*(aux+i));
-    Serial.print("\t");
-  }
-  Serial.println();
+//  vTaskDelay(4000);
+//  ejemplo();
+//  Serial.print("ASUNTO: ");
+//  byte *aux;
+//  aux = intAByte(3456509049);
+//  for(int i=0; i<4; i++)
+//  {
+//    Serial.print(*(aux+i));
+//    Serial.print("\t");
+//  }
+//  Serial.println();
  // EEPROMGuardar(nuidPICC[0], nuidPICC[1]);
-  ponerACero();
+//  ponerACero();
+
+  uint32_t tagAcceso = 0;
+  String respuesta;
 
   for(;;)
   {
+    if(xQueueReceive(logsQueue, &tagAcceso, 5))
+    {
+//      Serial.print("RESPUESTA: ");
+      Serial.println(tagAcceso);
+      respuesta = postAcceso(tagAcceso);
+      Serial.print("RESPUESTA: ");
+      Serial.println(respuesta);
+    }
 //    digitalWrite(LED_BUILTIN, HIGH);
 //    vTaskDelay(500);
 //    digitalWrite(LED_BUILTIN, LOW);
